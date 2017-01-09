@@ -21,6 +21,8 @@ public class MovementKeyHandler extends AnimationTimer{
 
 	@Override
 	public void handle(long now) {
+		// need to regulate gravity better.
+		// jump falls faster...
 		hero.move(0, 1);
 		if(keyInput.contains("D")){
 			hero.move(1, 0);

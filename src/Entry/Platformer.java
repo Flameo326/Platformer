@@ -30,18 +30,15 @@ public class Platformer extends Application {
 	
 	private ArrayList<String> keyInput;
 	
-	// I could just make it so 
+	// I could just make it so they're all collideable but backgrounds and people aren't????
 	private ArrayList<GraphicsObject> background;
 	private ArrayList<CollideableObject> people;
 	private ArrayList<CollideableObject> objects;
-	
-	private MovementKeyHandler mvmKey;
+
 	private Player hero;
 	
 	public Platformer(){
 		keyInput = new ArrayList<String>();
-//		mvmKey = new MovementKeyHandler(keyInput, hero);
-//		mvmKey.start();
 		
 		Image img = new Image("file:///C:/Users/Flameo326/Pictures/Gimp/FootprintGreen.png");
 		hero = new Player(img, 50, 305);
@@ -63,7 +60,8 @@ public class Platformer extends Application {
 		CollideableObject surface = new CollideableObject(tempObj, 50, 300);
 		surface.setIsCollideable(true);
 		addObject(surface);
-		hero.getColliders().add(surface);
+		hero.getColliders().addAll(objects);
+		hero.getColliders().addAll(people);
 	}
 
 	public static void main(String[] args){
