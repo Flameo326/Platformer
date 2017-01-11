@@ -35,33 +35,21 @@ public class Platformer extends Application {
 	private ArrayList<CollideableObject> people;
 	private ArrayList<CollideableObject> objects;
 
+	// Currently hero will  not fall through objects it is placed on unless it is placed less than 5 of its height, 
+	// i.e. 20 means 16 would fall through...
 	private Player hero;
 	
 	public Platformer(){
 		keyInput = new ArrayList<String>();
 		
 		Image img = new Image("file:///C:/Users/Flameo326/Pictures/Gimp/FootprintGreen.png");
-		hero = new Player(img, 50, 305);
+		hero = new Player(img, 50, 300);
 		hero.setTimer(new MovementKeyHandler(keyInput, hero));
 		
+		
 		background = new ArrayList<GraphicsObject>();
-		addBackground(new GraphicsObject(new Image("file:///C:/Users/Flameo326/Pictures/Theme Pictures/LightningFF13.jpg"), 0, 0));
-		
 		people = new ArrayList<CollideableObject>();
-		
 		objects = new ArrayList<CollideableObject>();
-		WritableImage tempObj = new WritableImage(100, 10);
-		PixelWriter pxW = tempObj.getPixelWriter();
-		for(int i = 0; i < tempObj.getWidth(); i++){
-			for(int y = 0; y < tempObj.getHeight(); y++){
-				pxW.setColor(i, y, Color.BROWN);
-			}
-		}
-		CollideableObject surface = new CollideableObject(tempObj, 50, 300);
-		surface.setIsCollideable(true);
-		addObject(surface);
-		hero.getColliders().addAll(objects);
-		hero.getColliders().addAll(people);
 	}
 
 	public static void main(String[] args){
@@ -78,6 +66,7 @@ public class Platformer extends Application {
 		g = canvas.getGraphicsContext2D();
 		root.getChildren().add(canvas);
 		
+		// Add key input
 		canvas.setFocusTraversable(true);
 		canvas.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
@@ -99,6 +88,7 @@ public class Platformer extends Application {
 			}
 		});
 		
+		// Graphics display
 		animation = new AnimationTimer(){
 			@Override
 			public void handle(long now) {
@@ -117,10 +107,67 @@ public class Platformer extends Application {
 		};
 		animation.start();
 		
+		createLevel();
+		hero.getColliders().addAll(objects);
+		hero.getColliders().addAll(people);
+		
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.centerOnScreen();
 		stage.show();
+	}
+	
+	private void createLevel(){
+		// Background
+		GraphicsObject background = new GraphicsObject(new Image("file:///C:/Users/Flameo326/Pictures/Theme Pictures/LightningFF13.jpg"), 0, 0);
+		background.setTimer(new AnimationTimer(){
+			@Override
+			public void handle(long now) {
+				background.update(-1, 0);
+			}
+		});
+		addBackground(background);
+		
+		// People
+		
+		//Objects
+		CollideableObject surface;
+		surface = newCollideableObject(Color.BROWN, 100, 20, 50, 300);
+		surface.setIsCollideable(true);
+		addObject(surface);
+		
+		CollideableObject movingPlatform = newCollideableObject(Color.RED, 100, 20, 380, 300);
+		movingPlatform.setIsCollideable(true);
+		movingPlatform.setTimer(new AnimationTimer(){
+			private int initialX = movingPlatform.getXPosition();
+			private boolean movingLeft = true;
+			@Override
+			public void handle(long now) {
+				if(movingLeft){
+					movingPlatform.update(-1, 0);
+					if(movingPlatform.getXPosition() <= initialX-movingPlatform.getWidth()){
+						movingLeft = false;
+					}
+				} else {
+					movingPlatform.update(1, 0);
+					if(movingPlatform.getXPosition() >= initialX+movingPlatform.getWidth()){
+						movingLeft = true;
+					}
+				}
+			}
+		});
+		addObject(movingPlatform);
+	}
+	
+	public CollideableObject newCollideableObject(Color c, int width, int height, int xPos, int yPos){
+		WritableImage tempObj = new WritableImage(width, height);
+		PixelWriter pxW = tempObj.getPixelWriter();
+		for(int i = 0; i < tempObj.getWidth(); i++){
+			for(int y = 0; y < tempObj.getHeight(); y++){
+				pxW.setColor(i, y, c);
+			}
+		}
+		return new CollideableObject(tempObj, xPos, yPos);
 	}
 	
 	public void addBackground(GraphicsObject obj){

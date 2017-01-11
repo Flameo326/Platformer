@@ -30,7 +30,8 @@ public class Player extends CollideableObject{
 		//continueJump(time);
 	}
 	
-	// I should fix this so it records where you are and where you should be at any point in a jump...
+	// Jump should be a lerp, aka a thread that constantly changes the position according to the time of the jump. 
+	// This should then be displayed ---
 	// also implement a better system of gravity?
 	public boolean continueJump(long time){
 		long timeBetween = time - getJumpOccurence();

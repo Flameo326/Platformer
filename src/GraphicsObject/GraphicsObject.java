@@ -40,7 +40,7 @@ public class GraphicsObject {
 		}
 	}
 	
-	private void setImage(Image img){
+	public void setImage(Image img){
 		this.img = img;
 		width = (int)img.getWidth();
 		height = (int)img.getHeight();

@@ -6,6 +6,9 @@ import Enum.Direction;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
+// Collision should be handled by a system of its own.
+// I should pass in all the entities, The system checks and returns if any are colliding
+// Another system would then handle those collision
 public class CollideableObject extends GraphicsObject{
 
 	private boolean isCollideable;
@@ -45,6 +48,11 @@ public class CollideableObject extends GraphicsObject{
 				}
 			}
 		}
+	}
+	
+	// will be used to test if an event should happen, i.e. score, death, speed, etc.
+	public void collide(){
+		throw new UnsupportedOperationException("Should not be called unless by child class.");
 	}
 	
 	public void setIsCollideable(boolean b){
