@@ -44,7 +44,7 @@ public class CollideableObject extends GraphicsObject{
 		for(CollideableObject collider : colliders){
 			if(collider.isCollideable()){
 				while(obj.intersects(collider)){
-					super.update(d.getInverseX(), d.getInverseY());
+					super.move(d.getInverseX(), d.getInverseY());
 				}
 			}
 		}

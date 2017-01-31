@@ -30,12 +30,6 @@ public class MovementKeyHandler extends AnimationTimer{
 		if(keyInput.contains("A")){
 			hero.move(-1, 0);			
 		}
-//		if(keyInput.contains("W")){
-//			hero.move(0, -1);			
-//		}
-//		if(keyInput.contains("S")){
-//			hero.move(0, 1);			
-//		}
 		if(jumped){
 			jumped = hero.continueJump(now);
 		}

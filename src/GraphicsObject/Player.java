@@ -42,7 +42,7 @@ public class Player extends CollideableObject{
 		if(timeBetween >= getJumpTime() * 2){
 			return false;
 		}
-		update(0, -distance);
+		move(0, -distance/getSpeed());
 		return true; // would return after finished umped or more realistically when they collide...
 	}
 	
